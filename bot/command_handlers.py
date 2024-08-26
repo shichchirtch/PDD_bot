@@ -312,17 +312,18 @@ async def validate_time(message: Message, state: FSMContext):
 
     timezone_offset = 2.0  # время бота
     tz_bot = timezone(datetime.timedelta(hours=timezone_offset))
-    jetzt = datetime.datetime.now(tz_bot)
+    datetime.datetime.now(tz_bot)
+    # jetzt = datetime.datetime.now(tz_bot)
 
-    print('jetzt = ', jetzt)
-    data = str(datetime.datetime.astimezone(jetzt))  # 2024-08-23 14:44:02.083133+02:00
-    #  Нам нужна только цифра 2 в конце строки. Код ниже это делает
-    print('data = ', data)
-    nedeed_data = data.split('+')[1]
-    ohne_null = int(nedeed_data.split(':')[0])
-    us_dict = await state.get_data()
-    tz_sdvig = us_dict['my_tz']
-    offset = datetime.timedelta(hours=ohne_null + tz_sdvig)
+    # print('jetzt = ', jetzt)  # 2024-08-26 22:50:21.402277+02:00
+    # data = str(datetime.datetime.astimezone(jetzt))
+    # #  Нам нужна только цифра 2 в конце строки. Код ниже это делает
+    # print('data = ', data)  # data =  2024-08-26 20:50:21.402277+00:00
+    # nedeed_data = data.split('+')[1]  # 00:00
+    # ohne_null = int(nedeed_data.split(':')[0]) # 0
+    us_dict = await state.get_data() #
+    tz_sdvig = us_dict['my_tz'] #
+    offset = datetime.timedelta(hours= tz_sdvig)  #ohne_null + tz_sdvig)
 
     tz = datetime.timezone(offset)  # в timezone нужно передавать timedelta
     await state.update_data(napomny_time=message.text)
