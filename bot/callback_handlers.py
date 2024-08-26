@@ -251,8 +251,8 @@ async def callback_tz(callback: CallbackQuery, state: FSMContext):
             temp_message = users_db[user_id]['bot_answer']
             await temp_message.delete()
         users_db[user_id]['bot_answer'] = ''
-    if callback.data !='0':
-        await state.update_data(my_tz=int(callback.data))
+    # if callback.data !='2':
+    await state.update_data(my_tz=int(callback.data))
     await callback.message.answer(set_time)
     await callback.answer()
 

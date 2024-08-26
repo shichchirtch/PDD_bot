@@ -21,13 +21,13 @@ nach_30_kb = InlineKeyboardMarkup(inline_keyboard=[[bekom_ticket], [choose_ticke
 
 edit_my_ant = InlineKeyboardButton(text='СБРОСИТЬ', callback_data='Сбросить')
 
-button_0 = InlineKeyboardButton(text='У меня столько же', callback_data='0' )
-button_1 = InlineKeyboardButton(text='На час больше', callback_data='1' )
-button_2 = InlineKeyboardButton(text='На 2 часа больше', callback_data='2' )
-button_3 = InlineKeyboardButton(text='На 3 часа больше', callback_data='3' )
-button_4 = InlineKeyboardButton(text='На 4 часа больше', callback_data='4' )
-button_5 = InlineKeyboardButton(text='На 5 часов больше', callback_data='5' )
-button_6 = InlineKeyboardButton(text='На 6 часов больше', callback_data='6' )
+button_0 = InlineKeyboardButton(text='У меня столько же', callback_data='2' )
+button_1 = InlineKeyboardButton(text='На час больше', callback_data='3' )
+button_2 = InlineKeyboardButton(text='На 2 часа больше', callback_data='4' )
+button_3 = InlineKeyboardButton(text='На 3 часа больше', callback_data='5' )
+button_4 = InlineKeyboardButton(text='На 4 часа больше', callback_data='6' )
+button_5 = InlineKeyboardButton(text='На 5 часов больше', callback_data='7' )
+button_6 = InlineKeyboardButton(text='На 6 часов больше', callback_data='8' )
 
 tz_kb = InlineKeyboardMarkup(
             inline_keyboard=[[button_0], [button_1],

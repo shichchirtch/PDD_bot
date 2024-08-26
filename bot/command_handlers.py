@@ -19,6 +19,7 @@ from contextlib import suppress
 from inlinekeyboards import *
 from random import randint
 import datetime
+from datetime import timezone
 
 ch_router = Router()
 
@@ -31,7 +32,7 @@ async def process_start_command(message: Message, state: FSMContext):
         await insert_new_user_in_table(user_id, user_name)
         users_db[message.from_user.id] = deepcopy(user_dict)
         await state.set_state(FSM_ST.after_start)
-        await state.set_data({'A': '🔴', 'B': '🟡', 'C': '🟢', 'capture': 0, 'my_tz': 0})
+        await state.set_data({'A': '🔴', 'B': '🟡', 'C': '🟢', 'capture': 0, 'my_tz': 0, 'napomny_time':''})
         await message.answer(text=f'{html.bold(html.quote(user_name))}, '
                                   f'Привет !\n'
                                   f'Я бот для изучения ПДД в Германии. '
@@ -252,20 +253,25 @@ async def settings_command(message: Message):
 @ch_router.message(Command('timer'), StateFilter(FSM_ST.after_start))
 async def timer_command(message: Message, state: FSMContext):
     user_id = message.from_user.id
-    await state.set_state(FSM_ST.settings)
-    first_num = 1
-    second_num = randint(1, 9)
-    summa = first_num + second_num
-    await state.update_data(capture=summa)
-    temp_data = users_db[user_id]['bot_answer']
-    if temp_data:
-        with suppress(TelegramBadRequest):
-            temp_message = users_db[user_id]['bot_answer']
-            await temp_message.delete()
-    att = await message.answer(f'{timer}<b>{first_num} + {second_num}  =  ?</b>')
-    await asyncio.sleep(2)
-    await message.delete()
-    users_db[message.from_user.id]['bot_answer'] = att
+    us_dict = await state.get_data()
+    napomny_time = us_dict['napomny_time']
+    if napomny_time:
+        await message.answer(f'{allready_exists} <b>{napomny_time}</b>')
+    else:
+        await state.set_state(FSM_ST.settings)
+        first_num = 1
+        second_num = randint(1, 9)
+        summa = first_num + second_num
+        await state.update_data(capture=summa)
+        temp_data = users_db[user_id]['bot_answer']
+        if temp_data:
+            with suppress(TelegramBadRequest):
+                temp_message = users_db[user_id]['bot_answer']
+                await temp_message.delete()
+        att = await message.answer(f'{timer}<b>{first_num} + {second_num}  =  ?</b>')
+        await asyncio.sleep(2)
+        await message.delete()
+        users_db[message.from_user.id]['bot_answer'] = att
 
 
 @ch_router.message(StateFilter(FSM_ST.settings), IS_DIGIT())
@@ -280,7 +286,10 @@ async def validate_capture(message: Message, state: FSMContext):
             await temp_message.delete()
 
     if secret_sum == int(message.text):
-        time_now = datetime.datetime.now()
+        timezone_offset = 2.0  # время бота
+        tz_bot = timezone(datetime.timedelta(hours=timezone_offset))
+        time_now = datetime.datetime.now(tz_bot)
+        # time_now = datetime.datetime.now()
         format_time = '%H:%M'
         print(time_now.strftime(format_time))
         att = await message.answer(f'{wie_viel_uhr}  <b>{time_now.strftime(format_time)}</b>\n\n'
@@ -297,21 +306,28 @@ async def validate_capture(message: Message, state: FSMContext):
 
 @ch_router.message(IS_TIME(), StateFilter(FSM_ST.settings))
 async def validate_time(message: Message, state: FSMContext):
+    '''Функция принимает строку вида 12:17'''
     user_id = message.from_user.id
-    jetzt = datetime.datetime.now()  # 2024-08-23 14:44:02.083133
+    # jetzt = datetime.datetime.now()  # 2024-08-23 14:44:02.083133
+
+    timezone_offset = 2.0  # время бота
+    tz_bot = timezone(datetime.timedelta(hours=timezone_offset))
+    jetzt = datetime.datetime.now(tz_bot)
+
     print('jetzt = ', jetzt)
     data = str(datetime.datetime.astimezone(jetzt))  # 2024-08-23 14:44:02.083133+02:00
     #  Нам нужна только цифра 2 в конце строки. Код ниже это делает
-    print(data)
+    print('data = ', data)
     nedeed_data = data.split('+')[1]
     ohne_null = int(nedeed_data.split(':')[0])
     us_dict = await state.get_data()
     tz_sdvig = us_dict['my_tz']
     offset = datetime.timedelta(hours=ohne_null + tz_sdvig)
-    tz = datetime.timezone(offset)  # в timezone нужно передавать timedelta
 
-    napominalka_sync(user_id, message.text, tz)
-    await message.answer(f'{set_napom}  <b>{message.text}</b>')
+    tz = datetime.timezone(offset)  # в timezone нужно передавать timedelta
+    await state.update_data(napomny_time=message.text)
+    napominalka_sync(user_id, message.text, tz)  # Запускаю планировщик
+    await message.answer(f'{set_napom}  <b>{message.text}</b>') # \n\n jetzt = {jetzt}')
     await state.set_state(FSM_ST.after_start)
 
 
@@ -321,6 +337,7 @@ async def delete_schedule_command(message: Message, state: FSMContext):
     try:
         scheduler.remove_job(str(user_id))
         await message.answer('График оповещений отменён')
+        await state.update_data(napomny_time='')
     except Exception:  # JobLookupError:
         await message.answer('У Вас нет графика напоминаний')
     await state.set_state(FSM_ST.after_start)
