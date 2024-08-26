@@ -3538,6 +3538,7 @@ tickets_dict = {
                               '🟢 - Я произведу экстренное торможение',
            'right_answer': green,
            'video_id': 'BAACAgIAAxkBAAIGaGa6DVBeuv4wg5keoQu0f_K_2CEAAzFTAAIUlNBJLZEO7MblOiw1BA',
+'text_frage':'',
            'poas': ''},
 
 1344: {'foto_id': 'AgACAgIAAxkBAAIGama6DgABCKLIrVJBD87sZroqPTn87wACSuExGxSU0Ek1xVjHuMGymwEAAwIAA3gAAzUE',
@@ -4594,7 +4595,7 @@ tickets_dict = {
            'poas': ''},
 
     1448: {'foto_id': 'AgACAgIAAxkBAAIH92a9QyBz9WuMeRuTEedi1xLahq39AALl5jEbPxHoSQ2gT3JTGnJfAQADAgADeAADNQQ',
-           'desс': '🔹\n\nРазрешается ли здесь двигаться быстрее 60 км/ч ?'
+           'desc': '🔹\n\nРазрешается ли здесь двигаться быстрее 60 км/ч ?'
                               '\n\n'
                               '🔴 - Да, если проезжая часть мокрая\n\n'
                               '🟡 - Да, если проезжая часть сухая\n\n'
@@ -6763,7 +6764,7 @@ tickets_dict = {
                               '🔴 - движется как правило по траектории легкового автомобиля\n\n'
                               '🟡 - может срезать угол поворота\n\n'
                               '🟢 - может отклониться',
-           'right_answer': '',
+           'right_answer': yellow_green,
            'video_id': '',
            'poas': ''},
 
@@ -6773,9 +6774,9 @@ tickets_dict = {
                               '🔴 - На транспортные средства, приближающиеся слева\n\n'
                               '🟡 - На трактор\n\n'
                               '🟢 - На мотоцикл',
-           'right_answer': '',
+           'right_answer': red_green,
            'video_id': 'BAACAgIAAxkBAAILYmbCgA4WfI91vxitw0gxXJh05DeLAAKSVQACeMERSkOUtY_5G8zINQQ',
-           'text_frage':red_green,
+           'text_frage': '',
            'poas': ''},
 
     1663: {'foto_id': '',
