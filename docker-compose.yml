@@ -1,0 +1,31 @@
+services:
+  main_bot:
+    build:
+      context: .
+    env_file:
+      - env/main.env
+    restart: on-failure
+    volumes:
+      - ./bot:/bot
+    depends_on:
+      - postgres_main2508
+      - redis_FSM2508
+
+  postgres_main2508:
+    image: postgres:16.2
+    env_file:
+      - env/postgres.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis_FSM2508:
+    image: redis:5.0.5
+    command: redis-server --appendonly yes
+    restart: always
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
+
