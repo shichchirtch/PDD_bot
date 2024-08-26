@@ -80,7 +80,7 @@ async  def start_exam(bot, user_id, state:FSMContext):
 def scheduler_job(user_id, state):
     print(f'scheduler_job works for user {user_id}')
     time_now = datetime.now()  # Время сейчас
-    delta = timedelta(seconds=10)  # Время, которое отводится на ответ
+    delta = timedelta(seconds=2700)  # Время, которое отводится на ответ
     future = time_now+delta  # Время когда действие должно быть закончено
     stop_exam = 'exam'+str(user_id)
     scheduler.add_job(start_exam, "date", run_date=future, args=(bot, user_id, state), id=stop_exam)
