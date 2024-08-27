@@ -113,6 +113,7 @@ async def list_release(message: Message):
     await insert_new_ticket(user_id, frage_list)
     key = frage_list[0]
     users_db[user_id]['tik_nummer'] = key  # Это id_tikest
+    users_db[user_id]['bilet_number'] = int(message.text)
     num = 1
     ticket = tickets_dict[key]
     if ticket['foto_id']:
@@ -313,6 +314,7 @@ async def validate_time(message: Message, state: FSMContext):
     timezone_offset = 2.0  # время бота
     tz_bot = timezone(datetime.timedelta(hours=timezone_offset))
     datetime.datetime.now(tz_bot)
+
     # jetzt = datetime.datetime.now(tz_bot)
 
     # print('jetzt = ', jetzt)  # 2024-08-26 22:50:21.402277+02:00
