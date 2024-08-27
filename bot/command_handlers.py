@@ -114,6 +114,7 @@ async def list_release(message: Message):
     key = frage_list[0]
     users_db[user_id]['tik_nummer'] = key  # Это id_tikest
     users_db[user_id]['bilet_number'] = int(message.text)
+    await message.answer(f'🔹<b>{ticket_index}  {message.text}</b>')
     num = 1
     ticket = tickets_dict[key]
     if ticket['foto_id']:

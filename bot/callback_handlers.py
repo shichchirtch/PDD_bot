@@ -185,7 +185,7 @@ async def verify_antwort(callback: CallbackQuery, state:FSMContext):
 
 @cb_router.callback_query(VYBRATb_BILET_FILTER())
 async def vybratb_Bilet(callback: CallbackQuery):
-    print("vybratb_Bilet works !\n")
+    # print("vybratb_Bilet works !\n")
     user_id = callback.from_user.id
     temp_data = users_db[user_id]['bot_answer']
     if temp_data:
@@ -207,7 +207,7 @@ async def New_Bilet(callback: CallbackQuery):
             await temp_message.delete()
         users_db[user_id]['bot_answer'] = ''
 
-    print("New_Bilet works !\n")
+    # print("New_Bilet works !\n")
     users_db[user_id]['bilet_number']+=1
     bilet_id = users_db[user_id]['bilet_number']
     frage_list = get_tickets(bilet_id)
@@ -216,6 +216,7 @@ async def New_Bilet(callback: CallbackQuery):
     users_db[user_id]['current_tic_number'] = 0
     key = frage_list[0]
     users_db[user_id]['tik_nummer'] = key  # Уникальный номер вопроса
+    await callback.message.answer(f'🔹<b>{ticket_index}  {bilet_id}</b>')
     num = 1
     ticket = tickets_dict[key]
     if ticket['foto_id']:
