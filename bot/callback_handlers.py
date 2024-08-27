@@ -10,7 +10,7 @@ from FSM import FSM_ST
 from inlinekeyboards import *
 from contextlib import suppress
 from tickets import tickets_dict
-from external_functions import get_tickets
+from external_functions import get_tickets, return_bally
 from bot_instance import scheduler
 from postgress_function import *
 
@@ -122,9 +122,10 @@ async def verify_antwort(callback: CallbackQuery, state:FSMContext):
             await callback.message.answer(otwet,
                                           reply_markup=None)
             bally = users_db[user_id]['right_answer']
+            emo_bally = return_bally(str(bally))
             current_state = await state.get_state()
             if current_state != 'FSM_ST:exam':
-                stroka = (f'{ticket_finish}\n\nКоличество правильных ответов -   <b>{bally}</b>\n\n{ne_exam_otvet}')
+                stroka = (f'{ticket_finish}\n\nКоличество правильных ответов -   {emo_bally}\n\n{ne_exam_otvet}')
                 await callback.message.answer(stroka)
                 att = await callback.message.answer('Выбирите действие',
                                                     reply_markup=nach_30_kb)
@@ -132,10 +133,10 @@ async def verify_antwort(callback: CallbackQuery, state:FSMContext):
             else:
                 await state.set_state(FSM_ST.after_start)
                 if bally < 29:
-                    stroka = (f'{exam_finish}\n\nКоличество правильных ответов -   <b>{bally}</b>\n\n{exam_ne_sdan}')
+                    stroka = (f'{exam_finish}\n\nКоличество правильных ответов -   {emo_bally}\n\n{exam_ne_sdan}')
                     await callback.message.answer(stroka)
                 else:
-                    stroka = (f'{exam_finish}\n\nКоличество правильных ответов -   <b>{bally}</b>\n\n{exam_sdan}')
+                    stroka = (f'{exam_finish}\n\nКоличество правильных ответов -   {bally}\n\n{exam_sdan}')
                     await callback.message.answer(stroka)
                 # Нужно отменить задачу шедулера
                 stop_exam = 'exam'+str(user_id)
@@ -156,9 +157,10 @@ async def verify_antwort(callback: CallbackQuery, state:FSMContext):
             await callback.message.answer(otwet,
                                                 reply_markup=None)
             bally = users_db[user_id]['right_answer']
+            emo_bally = return_bally(str(bally))
             current_state = await state.get_state()
             if current_state != 'FSM_ST:exam':
-                stroka = (f'{ticket_finish}\n\nКоличество правильных ответов -   <b>{bally}</b>\n\n{ne_exam_otvet}')
+                stroka = (f'{ticket_finish}\n\nКоличество правильных ответов -   {emo_bally}\n\n{ne_exam_otvet}')
                 await callback.message.answer(stroka)
                 att = await callback.message.answer('Выбирите действие',
                                                     reply_markup=nach_30_kb)
@@ -167,10 +169,10 @@ async def verify_antwort(callback: CallbackQuery, state:FSMContext):
             else:
                 await state.set_state(FSM_ST.after_start)
                 if bally < 29:
-                    stroka = (f'{exam_finish}\n\nКоличество правильных ответов -   <b>{bally}</b>\n\n{exam_ne_sdan}')
+                    stroka = (f'{exam_finish}\n\nКоличество правильных ответов -   {emo_bally}\n\n{exam_ne_sdan}')
                     await callback.message.answer(stroka)
                 else:
-                    stroka = (f'{exam_finish}\n\nКоличество правильных ответов -   <b>{bally}</b>\n\n{exam_sdan}')
+                    stroka = (f'{exam_finish}\n\nКоличество правильных ответов -   {emo_bally}\n\n{exam_sdan}')
                     await callback.message.answer(stroka)
 
             users_db[user_id]['right_answer'] = 0

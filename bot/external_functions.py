@@ -117,5 +117,13 @@ def napominalka_sync(user_id, str_time, tz):
 
 
 
-
+def return_bally(bally:str)->str:
+    emo_dict = {'0':'0️⃣', '1':'1️⃣', '2': '2️⃣', '3':'3️⃣', '4':'4️⃣', '5':'5️⃣', '6':'6️⃣', '7':'7️⃣', '8':'8️⃣', '9':'9️⃣'}
+    if len(bally)==1:
+        return emo_dict[bally]
+    else:
+        des = emo_dict[bally[0]]
+        ed = emo_dict[bally[1]]
+        cifra = des+ed
+    return cifra
 
