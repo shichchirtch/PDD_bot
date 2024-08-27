@@ -6,7 +6,7 @@ from aiogram.filters import CommandStart, Command, StateFilter
 from python_db import user_dict, users_db
 from filters import PRE_START, TICKET_NUMBER_LIST, ZERO_FILTER, IS_DIGIT, IS_TIME
 from lexikon import *
-from external_functions import get_tickets, get_random_30_questions, scheduler_job, napominalka_sync
+from external_functions import get_tickets, get_random_30_questions, scheduler_job, napominalka_sync, return_bally
 from copy import deepcopy
 from aiogram.fsm.context import FSMContext
 from keyboards import pre_start_clava
@@ -114,7 +114,7 @@ async def list_release(message: Message):
     key = frage_list[0]
     users_db[user_id]['tik_nummer'] = key  # Это id_tikest
     users_db[user_id]['bilet_number'] = int(message.text)
-    await message.answer(f'🔹<b>{ticket_index}  {message.text}</b>')
+    await message.answer(f'🔹 <b>{ticket_index}  # {return_bally(message.text)}</b>')
     num = 1
     ticket = tickets_dict[key]
     if ticket['foto_id']:

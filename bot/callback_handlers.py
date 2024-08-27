@@ -216,7 +216,7 @@ async def New_Bilet(callback: CallbackQuery):
     users_db[user_id]['current_tic_number'] = 0
     key = frage_list[0]
     users_db[user_id]['tik_nummer'] = key  # Уникальный номер вопроса
-    await callback.message.answer(f'🔹<b>{ticket_index}  {bilet_id}</b>')
+    await callback.message.answer(f'🔹 <b>{ticket_index}  # {return_bally(str(bilet_id))}</b>')
     num = 1
     ticket = tickets_dict[key]
     if ticket['foto_id']:
