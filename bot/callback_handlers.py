@@ -1,3 +1,5 @@
+import asyncio
+
 from aiogram import Router
 from filters import *
 from aiogram.filters import StateFilter
@@ -215,12 +217,14 @@ async def New_Bilet(callback: CallbackQuery):
     else:
         await callback.message.answer('<b>Вы решили последний 30 билет в коллекции !    🥳\n\nВозвращаемся к первому билету !</b>')
         bilet_id = users_db[user_id]['bilet_number'] = 1
+
     frage_list = get_tickets(bilet_id)
     print('frage list = ', frage_list)
     await insert_new_ticket(user_id, frage_list)
     users_db[user_id]['current_tic_number'] = 0
     key = frage_list[0]
     users_db[user_id]['tik_nummer'] = key  # Уникальный номер вопроса
+    await asyncio.sleep(1.5)
     await callback.message.answer(f'🔹 <b>{ticket_index}  # {return_bally(str(bilet_id))}</b>')
     num = 1
     ticket = tickets_dict[key]
