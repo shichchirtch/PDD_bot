@@ -112,9 +112,8 @@ async def verify_antwort(callback: CallbackQuery, state:FSMContext):
 
     if user_answer == right_answer:
         otwet = f'Вы ответили   {user_answer}\n\n<b>{right}</b>'
-        # users_db[user_id]['user_ans'] = otwet  # а это зачем ?
         users_db[user_id]['right_answer'] += 1 #  в db
-        await total_increment(user_id)
+        await total_increment(user_id)  # В Postgress
 
         if list_index != 29:
             att = await callback.message.answer(otwet,
@@ -133,7 +132,7 @@ async def verify_antwort(callback: CallbackQuery, state:FSMContext):
                                                     reply_markup=nach_30_kb)
                 users_db[user_id]['bot_answer'] = att
             else:
-                await state.set_state(FSM_ST.after_start)
+
                 if bally < 29:
                     stroka = (f'{exam_finish}\n\nКоличество правильных ответов -   {emo_bally}\n\n{exam_ne_sdan}')
                     await callback.message.answer(stroka)
@@ -143,10 +142,11 @@ async def verify_antwort(callback: CallbackQuery, state:FSMContext):
                 # Нужно отменить задачу шедулера
                 stop_exam = 'exam'+str(user_id)
                 scheduler.remove_job(stop_exam)
+            await state.set_state(FSM_ST.after_start)  # на последнем вопросе устанавлиаю состояние after_start
             users_db[user_id]['right_answer'] = 0
             users_db[user_id]['current_tic_number'] = 0
 
-    else:
+    else:  # Если юзер ошибся
         if tickets_dict[current_ticket_id]['poas']:
             await callback.message.answer(tickets_dict[current_ticket_id]['poas'])
         formated = " ".join(right_answer)
@@ -155,9 +155,8 @@ async def verify_antwort(callback: CallbackQuery, state:FSMContext):
             att = await callback.message.answer(otwet,
                                           reply_markup=next_kb)
             users_db[user_id]['bot_answer'] = att
-        else:
-            await callback.message.answer(otwet,
-                                                reply_markup=None)
+        else:  # Если последний вопрос
+            await callback.message.answer(otwet, reply_markup=None)
             bally = users_db[user_id]['right_answer']
             emo_bally = return_bally(str(bally))
             current_state = await state.get_state()
@@ -167,16 +166,14 @@ async def verify_antwort(callback: CallbackQuery, state:FSMContext):
                 att = await callback.message.answer('Выбирите действие',
                                                     reply_markup=nach_30_kb)
                 users_db[user_id]['bot_answer'] = att
-
             else:
-                await state.set_state(FSM_ST.after_start)
                 if bally < 29:
                     stroka = (f'{exam_finish}\n\nКоличество правильных ответов -   {emo_bally}\n\n{exam_ne_sdan}')
                     await callback.message.answer(stroka)
                 else:
                     stroka = (f'{exam_finish}\n\nКоличество правильных ответов -   {emo_bally}\n\n{exam_sdan}')
                     await callback.message.answer(stroka)
-
+            await state.set_state(FSM_ST.after_start) # в любом случае устанавливаю состояние after_start
             users_db[user_id]['right_answer'] = 0
             users_db[user_id]['current_tic_number'] = 0
 
