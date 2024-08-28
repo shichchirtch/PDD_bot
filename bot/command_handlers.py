@@ -37,7 +37,7 @@ async def process_start_command(message: Message, state: FSMContext):
                                   f'Привет !\n'
                                   f'Я бот для изучения ПДД в Германии. '
                                   f'Для рабаоты со мной нажмите кнопку '
-                                  f'<b>menu</b> или\n\n🔹                   /help\n\n'
+                                  f'<b>Меню</b> \n\n🔹                   /help\n\n'
                                   f'🔹                       🚨',
                              parse_mode=ParseMode.HTML,
                              reply_markup=ReplyKeyboardRemove())
