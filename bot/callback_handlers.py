@@ -208,8 +208,13 @@ async def New_Bilet(callback: CallbackQuery):
         users_db[user_id]['bot_answer'] = ''
 
     # print("New_Bilet works !\n")
-    users_db[user_id]['bilet_number']+=1
-    bilet_id = users_db[user_id]['bilet_number']
+    reschennbiy_bilet = users_db[user_id]['bilet_number']
+    if reschennbiy_bilet < 30:
+        users_db[user_id]['bilet_number']+=1
+        bilet_id = users_db[user_id]['bilet_number']
+    else:
+        await callback.message.answer('<b>Вы решили последний 30 билет в коллекции !    🥳\n\nВозвращаемся к первому билету !</b>')
+        bilet_id = users_db[user_id]['bilet_number'] = 1
     frage_list = get_tickets(bilet_id)
     print('frage list = ', frage_list)
     await insert_new_ticket(user_id, frage_list)
