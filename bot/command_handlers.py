@@ -36,7 +36,7 @@ async def process_start_command(message: Message, state: FSMContext):
         await message.answer(text=f'{html.bold(html.quote(user_name))}, '
                                   f'Привет !\n'
                                   f'Я бот для изучения ПДД в Германии. '
-                                  f'Для рабаоты со мной нажмите кнопку '
+                                  f'Для работы со мной нажмите кнопку '
                                   f'<b>Меню</b> \n\n🔹                   /help\n\n'
                                   f'🔹                       🚨',
                              parse_mode=ParseMode.HTML,
