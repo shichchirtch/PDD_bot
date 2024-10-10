@@ -20,7 +20,7 @@ class ABC_FILTER(BaseFilter):
 class SEND_FILTER(BaseFilter):
     async def __call__(self, callback: CallbackQuery):
         # print('callback.data2 = ', callback.data)
-        if callback.data == 'ОТПРАВИТЬ':
+        if callback.data in ('ОТПРАВИТЬ', 'ارسال کنید'):
             return True
         return False
 
@@ -98,5 +98,18 @@ class IS_TIME(BaseFilter):
 class TZ_FILTER(BaseFilter):
     async def __call__(self, callback: CallbackQuery):
         if callback.data in ('0', '1', '2','3', '4', '5', '6'):
+            return True
+        return False
+
+class LAN_FILTER(BaseFilter):
+    async def __call__(self, callback: CallbackQuery):
+        if callback.data in ('ru', 'fa'):
+            return True
+        return False
+
+
+class IS_ADMIN(BaseFilter):
+    async def __call__(self, message: Message):
+        if message.from_user.id == 6685637602:
             return True
         return False

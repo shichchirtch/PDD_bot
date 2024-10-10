@@ -22,6 +22,7 @@ class User(Base):
     frage_list: Mapped[list] = mapped_column(ARRAY(Integer), default=[], nullable=True)
 
 
+
 async def init_models():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
