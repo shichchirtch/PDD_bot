@@ -39,7 +39,8 @@ async def process_start_command(message: Message, state: FSMContext):
                                   f'Я бот для изучения ПДД в Германии. '
                                   f'Для работы со мной нажмите кнопку '
                                   f'<b>Меню</b> \n\n🔹                   /help\n\n'
-                                  f'🔹                       🚨',
+                                  f'/change_lan  -  اگر به زبان فارسی نیاز دارید کلیک کنید'
+                                  f'\n\n🔹                       🚨',
                              parse_mode=ParseMode.HTML,
                              reply_markup=ReplyKeyboardRemove())
         await asyncio.sleep(0.5)
@@ -89,7 +90,7 @@ async def help_command(message: Message, state: FSMContext):
 
 
 @ch_router.message(Command('presentation'), StateFilter(FSM_ST.after_start))
-async def help_command(message: Message):
+async def presentation_command(message: Message):
     user_id = message.from_user.id
     lan = users_db[user_id]['lan']
     if lan == 'ru':
