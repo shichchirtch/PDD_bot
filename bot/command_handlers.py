@@ -87,6 +87,19 @@ async def help_command(message: Message, state: FSMContext):
     await asyncio.sleep(2)
     await message.delete()
 
+
+@ch_router.message(Command('presentation'), StateFilter(FSM_ST.after_start))
+async def help_command(message: Message):
+    user_id = message.from_user.id
+    lan = users_db[user_id]['lan']
+    if lan == 'ru':
+        await message.answer(text='https://youtu.be/gDee19N3gqI')
+    else:
+        await message.answer(text='https://youtu.be/wsgv6mNkb04')
+    await asyncio.sleep(2)
+    await message.delete()
+
+
 @ch_router.message(Command('change_lan'), StateFilter(FSM_ST.after_start))
 async def change_language(message: Message, state: FSMContext):
     user_id = message.from_user.id
