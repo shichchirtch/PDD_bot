@@ -81,7 +81,7 @@ async def help_command(message: Message, state: FSMContext):
         if fa_key not in bot_farsi_base:
             fa_text = await translates(help, lan)
             bot_farsi_base[fa_key]= fa_text
-            att = await message.answer(f'{fa_text}  \n\n/presentation/')
+            att = await message.answer(f'{fa_text}  \n\n/presentation')
         else:
             att = await message.answer(text=bot_farsi_base[fa_key])
     users_db[user_id]['bot_answer'] = att
